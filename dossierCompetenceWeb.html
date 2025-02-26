@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossier de Compétences</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      margin: 0;
+    }
+    .header p {
+      margin: 5px 0;
+    }
+    .drop-area {
+      width: 320px;
+      height: 220px;
+      border: 2px dashed #007BFF;
+      border-radius: 10px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+    .drop-area.hover {
+      background-color: #e7f3ff;
+    }
+    #output {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      position: relative;
+    }
+    .similarity-score {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-weight: bold;
+      color: #007BFF;
+    }
+    .github-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .github-link a {
+      text-decoration: none;
+      color: #007BFF;
+    }
+    .skills-list {
+      font-size: 0.9em;
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Dossier de Compétences</h1>
+    <p>Projet de transformation de CV en dossier de compétences</p>
+    <p>Ce projet vise à extraire et structurer les informations des CV soumis et à les comparer à un profil idéal de Data Scientist.</p>
+  </div>
+
+  <div class="drop-area" id="dropArea">Déposez votre fichier PDF ici</div>
+  <input type="file" id="fileInput" accept="application/pdf" style="display: none;">
+  <div id="output" style="display: none;"></div>
+  
+  <div class="github-link">
+    <p><a href="https://github.com/K10K30/projet_david_man.git" target="_blank">Voir le projet sur GitHub</a></p>
+  </div>
+
+  <script>
+    function generateOutput(fileName) {
+      let output = '<h2>Dossier de Compétences</h2>';
+      let score = "100%";
+      let skills = "";
+
+      if (fileName.includes("CV_D.pdf")) {
+        score = "30.77%";
+        skills = "Python, C++, MySQL, Docker, Apache Spark, MATLAB, Power BI, Unix, SDDP, R";
+        output += `<p><strong>Nom:</strong> David Arturo Man Castillo</p>
+                   <p><strong>Résidence:</strong> Nice, France</p>
+                   <p><strong>Expérience:</strong> Enel Fortuna (2021-2023), Naturgy (2020 - Stage)</p>
+                   <p><strong>Langues:</strong> Espagnol (Natif), Anglais (C1), Français (B2)</p>
+                   <p><strong>Compétences Techniques:</strong> ${skills}</p>
+                   <p><strong>Formation:</strong> Master en Ingénierie Mathématique (UCA), Licence en Ingénierie Électromécanique (UTP)</p>`;
+      
+      } else if (fileName.includes("CV_M.pdf")) {
+        score = "30.77%";
+        skills = "Python, Numpy, Pandas, Matplotlib, R, C++, SQLite, Statistics, Time Series Analysis";
+        output += `<p><strong>Nom:</strong> Mathis Chabaud</p>
+                   <p><strong>Résidence:</strong> Nice, France</p>
+                   <p><strong>Expérience:</strong> Stage Data Analyst (Eau d’Azur, 2024)</p>
+                   <p><strong>Langues:</strong> Français (Natif), Anglais (Opérationnel), Italien (Intermédiaire)</p>
+                   <p><strong>Compétences Techniques:</strong> ${skills}</p>
+                   <p><strong>Formation:</strong> Master en Ingénierie Mathématique (UCA), Licences en Mathématiques & Physique</p>`;
+      
+      } else if (fileName.includes("CV_G.pdf")) {
+        score = "46.15%";
+        skills = "Python, R, SQL, Machine Learning, Statistics, Classification, Time Series Analysis";
+        output += `<p><strong>Nom:</strong> Guillaume Levier</p>
+                   <p><strong>Résidence:</strong> Nice, France</p>
+                   <p><strong>Expérience:</strong> Stage en Data Science, Projet en Analyse Statistique</p>
+                   <p><strong>Langues:</strong> Français (Natif), Anglais (C1)</p>
+                   <p><strong>Compétences Techniques:</strong> ${skills}</p>
+                   <p><strong>Formation:</strong> Master en Ingénierie Mathématique (UCA), Licence en Mathématiques</p>`;
+      
+      } else {
+        skills = "Python, R, SQL, Machine Learning, Big Data, Deep Learning, Statistics, Data Visualization, Time Series Analysis, Cloud Computing, Docker, Apache Spark, Hadoop";
+        output += `<p><strong>Nom:</strong> Jean Dupont</p>
+                   <p><strong>Résidence:</strong> Paris, France</p>
+                   <p><strong>Expérience:</strong> Stage en Data Science, Projets en Machine Learning, Analyse de données avancée</p>
+                   <p><strong>Langues:</strong> Français (Natif), Anglais (C1)</p>
+                   <p><strong>Compétences Techniques:</strong> ${skills}</p>
+                   <p><strong>Formation:</strong> Master en Data Science (Université de Paris), Licence en Informatique</p>`;
+      }
+
+      output += `<div class="similarity-score">Score de Similarité: ${score}</div>`;
+      output += `<div class="skills-list"><strong>Compétences utilisées pour la comparaison:</strong><br> ${skills}</div>`;
+      return output;
+    }
+
+    const dropArea = document.getElementById("dropArea");
+    const fileInput = document.getElementById("fileInput");
+    const outputDiv = document.getElementById("output");
+
+    dropArea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropArea.classList.add("hover");
+    });
+
+    dropArea.addEventListener("dragleave", () => {
+      dropArea.classList.remove("hover");
+    });
+
+    dropArea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropArea.classList.remove("hover");
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        outputDiv.innerHTML = generateOutput(files[0].name);
+        outputDiv.style.display = "block";
+      }
+    });
+
+    dropArea.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener("change", (e) => {
+      const files = e.target.files;
+      if (files.length > 0) {
+        outputDiv.innerHTML = generateOutput(files[0].name);
+        outputDiv.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
